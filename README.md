@@ -1,5 +1,3 @@
-# React + TypeScript + Vite
-
 Esse é um projeto de sistema de gestão de Ordens de Serviço (OS) para uma assistência técnica. 
 
 Esse projeto foi criado durante o trainee da iJunior, com o intuito de aprender sobre as funcionalidades básicas de React e TailwindCSS
