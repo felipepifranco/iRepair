@@ -1,17 +1,17 @@
 import { useState } from 'react'
 import './App.css'
 import { ServiceCard } from './components/ServiceCard'
+import NewServiceForm from './components/NewServiceForm'
+import Header from './components/Header'
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <>
-      <h1 className='text-3xl font-bold underline'>
-        Hello World!
-      </h1>
-      <ServiceCard nomeCliente='Felipe' aparelho='Motonete' defeito='nadinha'/>
-    </>
+    <div className='flex flex-col gap-4'>
+      <Header />
+      <NewServiceForm />
+    </div>
   )
 }
 
