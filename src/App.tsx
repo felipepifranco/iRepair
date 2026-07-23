@@ -1,14 +1,20 @@
 import './App.css'
-import NewServiceForm from './components/NewServiceForm'
-import Header from './components/Header'
+import { BrowserRouter, Routes, Route } from 'react-router';
+import { ServiceOrdersPage } from "./pages/ServiceOrdersPage"
+import { DashboardPage } from './pages/DashboardPage';
+import  { ClientsPage } from './pages/ClientsPage';
 
 function App() {
 
   return (
-    <div className='flex flex-col gap-4'>
-      <Header />
-      <NewServiceForm />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<DashboardPage />} />
+        <Route path="/clients" element={<ClientsPage />} />
+        <Route path="/service-orders" element={<ServiceOrdersPage />} />
+         <Route path="*" element={<h1>Página não encontrada 💔</h1>} /> 
+      </Routes>
+    </BrowserRouter>
   )
 }
 

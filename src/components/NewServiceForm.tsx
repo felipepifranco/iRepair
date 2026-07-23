@@ -1,8 +1,57 @@
-import { useState } from "react";
-import { ServiceCard, type ServiceCardProp } from "./ServiceCard"; 
+import { useState, useEffect } from "react";
+import { ServiceCard } from "./ServiceCard"; 
+import { api } from "./../services/api";
+import { type Client, type ServiceOrder, type CreateServiceOrderData } from '../types';
+
+
+
+function AllServicesList(){
+  const [services, setServices] = useState<ServiceOrder[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        // TODO: conferir esse endereço e adicionar api
+        const response = await api.get('/services');
+        setServices(response.data);
+      } catch (e) {
+        setError('Não foi possível carregar os produtos.');
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    
+    fetchProducts()
+  }, []);
+  if (isLoading) return <p>Carregando...</p>;
+  if (error) return <p className="text-red-500">{error}</p>;
+  
+
+  return(
+    <div className="flex flex-col gap-4 mt-4">
+      {services.length === 0 && 
+      <p className="text-center text-stone-400">Nenhum serviço registrado.</p>}
+      
+      {services.map((service : ServiceOrder) => (
+        <ServiceCard 
+          key={service.id} 
+          id={service.id}
+          client_id={service.client_id}
+          device={service.device}
+          issue={service.issue}
+          status={service.status}
+          created_at={service.created_at}
+          due_at={service.due_at}
+        />
+      ))}
+    </div>
+  )
+}
 
 const NewServiceForm = () => {
-  const [servicos, setServicos] = useState<ServiceCardProp[]>([]);
+  const [services, setServicos] = useState<ServiceOrder[]>([]);
 
   //inputs
   const [nome, setNome] = useState("");
@@ -16,16 +65,24 @@ const NewServiceForm = () => {
     event.preventDefault();
 
     if (nome.trim() !== "" && aparelho.trim() !== "" && defeito.trim() !== "") {
-      const novoServico: ServiceCardProp = {
+      // CRIAR UM CLIENTE
+      const newClient: Client = {
         id: Date.now(),
-        nomeCliente: nome,
-        aparelho: aparelho,
-        defeito: defeito,
-        dataChegou: dataChegouStr ? new Date(dataChegouStr) : new Date(),
-        dataEntrega: dataEntregaStr ? new Date(dataEntregaStr) : undefined,
+        name: nome,
+        phone: "placeholder",
+        email: "placeholder",
+        created_at: new Date().toLocaleString()
+      }
+
+      const novoServico: CreateServiceOrderData = {
+        client_id: newClient.id,
+        device: aparelho,
+        issue: defeito,
+        status: 'open',
+        due_at: dataEntregaStr ? new Date(dataEntregaStr).toLocaleString() : undefined,
       };
 
-      setServicos((prevServicos) => [...prevServicos, novoServico]);
+      // TODO: FUNÇÃO DE COLOCAR NO BANCO DE DADOS
 
       setNome("");
       setAparelho("");
@@ -45,6 +102,8 @@ const NewServiceForm = () => {
             <label className="text-sky-600">Cliente:</label>
             <input 
               type="text" 
+              // TODO: pegar o objeto (buscar na API em vez de pegar o nome direto)
+              // se o cliente não existe, deve criar um novo
               value={nome} 
               onChange={(e) => setNome(e.target.value)} 
               placeholder="nome do cliente" 
@@ -103,21 +162,7 @@ const NewServiceForm = () => {
       </form>
 
       {/** renderização dos serviços usando map */}
-      <div className="flex flex-col gap-4 mt-4">
-        {servicos.length === 0 && 
-        <p className="text-center text-stone-400">Nenhum serviço registrado.</p>}
-        
-        {servicos.map((servico) => (
-          <ServiceCard 
-            key={servico.id} 
-            nomeCliente={servico.nomeCliente}
-            aparelho={servico.aparelho}
-            defeito={servico.defeito}
-            dataChegou={servico.dataChegou}
-            dataEntrega={servico.dataEntrega}
-          />
-        ))}
-      </div>
+      <AllServicesList />
     </div>
   );
 };
