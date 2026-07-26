@@ -1,37 +1,43 @@
 import { useState } from "react";
-import { ServiceCard, type ServiceCardProp } from "./ServiceCard"; 
+import { type CreateServiceOrderData } from '../types';
+import { createServiceOrder } from "../services/serviceOrderService";
+import { ClientSelectDropdown } from "./DropBox";
 
-const NewServiceForm = () => {
-  const [servicos, setServicos] = useState<ServiceCardProp[]>([]);
-
+function NewServiceForm({fetchServices} : {fetchServices : () => void}) {
   //inputs
-  const [nome, setNome] = useState("");
+  const [name, setName] = useState("");
   const [aparelho, setAparelho] = useState("");
   const [defeito, setDefeito] = useState("");
-  const [dataChegouStr, setDataChegouStr] = useState("");
-  const [dataEntregaStr, setDataEntregaStr] = useState("");
+  const [selectedClientId, setSelectedClientId] = useState<number | null>(null);
+
 
   //envio formulario
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    if (nome.trim() !== "" && aparelho.trim() !== "" && defeito.trim() !== "") {
-      const novoServico: ServiceCardProp = {
-        id: Date.now(),
-        nomeCliente: nome,
-        aparelho: aparelho,
-        defeito: defeito,
-        dataChegou: dataChegouStr ? new Date(dataChegouStr) : new Date(),
-        dataEntrega: dataEntregaStr ? new Date(dataEntregaStr) : undefined,
+    if (name.trim() !== "" && aparelho.trim() !== "" && defeito.trim() !== "") {
+      // PEGAR UM CLIENTE
+      const newService: CreateServiceOrderData = {
+        clientId: selectedClientId ?? 2,
+        device: aparelho,
+        issue: defeito,
+        status: 'open',
       };
+      
+      try {
+        await createServiceOrder(newService);
+        fetchServices()
 
-      setServicos((prevServicos) => [...prevServicos, novoServico]);
+        console.log(`carregou`)
 
-      setNome("");
-      setAparelho("");
-      setDefeito("");
-      setDataChegouStr("");
-      setDataEntregaStr("");
+        setName("");
+        setAparelho("");
+        setDefeito("");
+        setSelectedClientId(null);
+
+      } catch (e) {
+        console.error(e);
+      }
     }
   }
 
@@ -43,12 +49,10 @@ const NewServiceForm = () => {
         <div className="flex justify-between items-center gap-4">
           <div className="flex gap-2 items-center">
             <label className="text-sky-600">Cliente:</label>
-            <input 
-              type="text" 
-              value={nome} 
-              onChange={(e) => setNome(e.target.value)} 
-              placeholder="nome do cliente" 
-              className="p-1 rounded bg-zinc-700 text-white"
+            <ClientSelectDropdown
+              name={name}
+              setName={setName}
+              onSelectClient={setSelectedClientId}
             />
           </div>
           <div className="flex gap-2 items-center">
@@ -74,50 +78,12 @@ const NewServiceForm = () => {
           />
         </div>
 
-        <div className="flex justify-between gap-4">
-          <div className="flex gap-2 items-center">
-            <label className="text-sky-600 text-sm">Data chegada:</label>
-            <input 
-              type="date" 
-              value={dataChegouStr} 
-              onChange={(e) => setDataChegouStr(e.target.value)} 
-              className="p-1 rounded bg-zinc-700 text-white text-sm"
-            />
-          </div>
-          <div className="flex gap-2 items-center">
-            <label className="text-sky-600 text-sm">Data entrega:</label>
-            <input 
-              type="date" 
-              value={dataEntregaStr} 
-              onChange={(e) => setDataEntregaStr(e.target.value)} 
-              className="p-1 rounded bg-zinc-700 text-white text-sm"
-            />
-          </div>
-        </div>
-
         <input 
           type="submit" 
           value="Salvar" 
           className="bg-sky-600 text-white font-bold py-2 px-4 rounded cursor-pointer hover:bg-sky-700"
         />
       </form>
-
-      {/** renderização dos serviços usando map */}
-      <div className="flex flex-col gap-4 mt-4">
-        {servicos.length === 0 && 
-        <p className="text-center text-stone-400">Nenhum serviço registrado.</p>}
-        
-        {servicos.map((servico) => (
-          <ServiceCard 
-            key={servico.id} 
-            nomeCliente={servico.nomeCliente}
-            aparelho={servico.aparelho}
-            defeito={servico.defeito}
-            dataChegou={servico.dataChegou}
-            dataEntrega={servico.dataEntrega}
-          />
-        ))}
-      </div>
     </div>
   );
 };
