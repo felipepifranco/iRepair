@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
   
 
-export function ClientCard({id, name,phone, email, loadClients} : any){
+export function ClientCard({id, name,phone, email, loadClients} : Client & { loadClients: () => void }){
   // TODO: fazer função de pegar nome do cliente
 
   async function handleDelete(){
@@ -17,7 +17,6 @@ export function ClientCard({id, name,phone, email, loadClients} : any){
       // TODO: criar um alert
       console.error("Erro ao deletar cliente:", error);
     }
-
   }
 
   return (

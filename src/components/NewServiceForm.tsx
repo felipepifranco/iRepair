@@ -1,98 +1,43 @@
-import { useState, useEffect } from "react";
-import { ServiceCard } from "./ServiceCard"; 
-import { type Client, type ServiceOrder, type CreateServiceOrderData } from '../types';
+import { useState } from "react";
+import { type CreateServiceOrderData } from '../types';
 import { createServiceOrder } from "../services/serviceOrderService";
+import { ClientSelectDropdown } from "./DropBox";
 
-import { getAllServiceOrders } from "../services/serviceOrderService";
-
-
-function AllServicesList(){
-  const [services, setServices] = useState<ServiceOrder[]>([]);
-  const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    async function fetchProducts() {
-      try {
-        const data = await getAllServiceOrders();
-        setServices(data);
-      } catch (e) {
-        setError('Não foi possível carregar os serviços.');
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    
-    fetchProducts()
-  }, []);
-  if (isLoading) return <p>Carregando...</p>;
-  if (error) return <p className="text-red-500">{error}</p>;
-  
-
-  return(
-    <div className="flex flex-col gap-4 mt-4">
-      {services.length === 0 && 
-      <p className="text-center text-stone-400">Nenhum serviço registrado.</p>}
-      
-      {services.map((service : ServiceOrder) => (
-        <ServiceCard 
-          key={service.id} 
-          id={service.id}
-          client_id={service.client_id}
-          device={service.device}
-          issue={service.issue}
-          status={service.status}
-          created_at={service.created_at}
-        />
-      ))}
-    </div>
-  )
-}
-
-const NewServiceForm = () => {
+function NewServiceForm({fetchServices} : {fetchServices : () => void}) {
   //inputs
-  const [nome, setNome] = useState("");
+  const [name, setName] = useState("");
   const [aparelho, setAparelho] = useState("");
   const [defeito, setDefeito] = useState("");
-  const [dataChegouStr, setDataChegouStr] = useState("");
+  const [selectedClientId, setSelectedClientId] = useState<number | null>(null);
 
-  const [error, setError] = useState<string | null>(null);
-  const [isSubmiting, setIsSubmitting] = useState(false);
 
   //envio formulario
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    if (nome.trim() !== "" && aparelho.trim() !== "" && defeito.trim() !== "") {
+    if (name.trim() !== "" && aparelho.trim() !== "" && defeito.trim() !== "") {
       // PEGAR UM CLIENTE
-
       const newService: CreateServiceOrderData = {
-        clientId: 1,
+        clientId: selectedClientId ?? 2,
         device: aparelho,
         issue: defeito,
         status: 'open',
       };
       
       try {
-        setIsSubmitting(true);
-        setError(null);
         await createServiceOrder(newService);
+        fetchServices()
 
         console.log(`carregou`)
 
-        setNome("");
+        setName("");
         setAparelho("");
         setDefeito("");
-        setDataChegouStr("");
+        setSelectedClientId(null);
 
       } catch (e) {
-        setError('Não foi possível registrar o serviço.');
         console.error(e);
-      } finally {
-        setIsSubmitting(false);
       }
-      
-
     }
   }
 
@@ -104,14 +49,10 @@ const NewServiceForm = () => {
         <div className="flex justify-between items-center gap-4">
           <div className="flex gap-2 items-center">
             <label className="text-sky-600">Cliente:</label>
-            <input 
-              type="text" 
-              // TODO: pegar o objeto (buscar na API em vez de pegar o nome direto)
-              // se o cliente não existe, deve criar um novo
-              value={nome} 
-              onChange={(e) => setNome(e.target.value)} 
-              placeholder="nome do cliente" 
-              className="p-1 rounded bg-zinc-700 text-white"
+            <ClientSelectDropdown
+              name={name}
+              setName={setName}
+              onSelectClient={setSelectedClientId}
             />
           </div>
           <div className="flex gap-2 items-center">
@@ -137,27 +78,12 @@ const NewServiceForm = () => {
           />
         </div>
 
-        <div className="flex justify-between gap-4">
-          <div className="flex gap-2 items-center">
-            <label className="text-sky-600 text-sm">Data chegada:</label>
-            <input 
-              type="date" 
-              value={dataChegouStr} 
-              onChange={(e) => setDataChegouStr(e.target.value)} 
-              className="p-1 rounded bg-zinc-700 text-white text-sm"
-            />
-          </div>
-        </div>
-
         <input 
           type="submit" 
           value="Salvar" 
           className="bg-sky-600 text-white font-bold py-2 px-4 rounded cursor-pointer hover:bg-sky-700"
         />
       </form>
-
-      {/** renderização dos serviços usando map */}
-      <AllServicesList />
     </div>
   );
 };
