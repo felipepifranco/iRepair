@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 
 import NewServiceForm from './../components/NewServiceForm'
-import Header from './../components/Header'
 import { type ServiceOrder } from '../types';
 import { getAllServiceOrders } from "../services/serviceOrderService";
 import { AllServicesList } from '../components/AllServicesList';
@@ -28,7 +27,6 @@ export const ServiceOrdersPage = () => {
 
   return (
     <div className='flex flex-col gap-4'>
-      <Header />
       <NewServiceForm fetchServices={fetchServices} />
       <AllServicesList isLoading={isLoading} error={error} services={services} fetchServices={fetchServices}/>
     </div>
