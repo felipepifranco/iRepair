@@ -7,7 +7,8 @@ export interface ServiceOrder {
   issue: string;
   status: ServiceOrderStatus;
   created_at : string;
-  due_at? : string;
 }
 
-export type CreateServiceOrderData = Omit<ServiceOrder, 'id' | 'created_at'>;
+export type CreateServiceOrderData = Omit<ServiceOrder, 'id' | 'created_at' | 'client_id'> & {
+  clientId: number;
+};

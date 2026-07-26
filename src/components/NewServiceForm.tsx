@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { ServiceCard } from "./ServiceCard"; 
-import { api } from "./../services/api";
 import { type Client, type ServiceOrder, type CreateServiceOrderData } from '../types';
+import { createServiceOrder } from "../services/serviceOrderService";
 
+import { getAllServiceOrders } from "../services/serviceOrderService";
 
 
 function AllServicesList(){
@@ -13,11 +14,10 @@ function AllServicesList(){
   useEffect(() => {
     async function fetchProducts() {
       try {
-        // TODO: conferir esse endereço e adicionar api
-        const response = await api.get('/services');
-        setServices(response.data);
+        const data = await getAllServiceOrders();
+        setServices(data);
       } catch (e) {
-        setError('Não foi possível carregar os produtos.');
+        setError('Não foi possível carregar os serviços.');
       } finally {
         setIsLoading(false);
       }
@@ -43,7 +43,6 @@ function AllServicesList(){
           issue={service.issue}
           status={service.status}
           created_at={service.created_at}
-          due_at={service.due_at}
         />
       ))}
     </div>
@@ -51,44 +50,49 @@ function AllServicesList(){
 }
 
 const NewServiceForm = () => {
-  const [services, setServicos] = useState<ServiceOrder[]>([]);
-
   //inputs
   const [nome, setNome] = useState("");
   const [aparelho, setAparelho] = useState("");
   const [defeito, setDefeito] = useState("");
   const [dataChegouStr, setDataChegouStr] = useState("");
-  const [dataEntregaStr, setDataEntregaStr] = useState("");
+
+  const [error, setError] = useState<string | null>(null);
+  const [isSubmiting, setIsSubmitting] = useState(false);
 
   //envio formulario
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     if (nome.trim() !== "" && aparelho.trim() !== "" && defeito.trim() !== "") {
-      // CRIAR UM CLIENTE
-      const newClient: Client = {
-        id: Date.now(),
-        name: nome,
-        phone: "placeholder",
-        email: "placeholder",
-        created_at: new Date().toLocaleString()
-      }
+      // PEGAR UM CLIENTE
 
-      const novoServico: CreateServiceOrderData = {
-        client_id: newClient.id,
+      const newService: CreateServiceOrderData = {
+        clientId: 1,
         device: aparelho,
         issue: defeito,
         status: 'open',
-        due_at: dataEntregaStr ? new Date(dataEntregaStr).toLocaleString() : undefined,
       };
+      
+      try {
+        setIsSubmitting(true);
+        setError(null);
+        await createServiceOrder(newService);
 
-      // TODO: FUNÇÃO DE COLOCAR NO BANCO DE DADOS
+        console.log(`carregou`)
 
-      setNome("");
-      setAparelho("");
-      setDefeito("");
-      setDataChegouStr("");
-      setDataEntregaStr("");
+        setNome("");
+        setAparelho("");
+        setDefeito("");
+        setDataChegouStr("");
+
+      } catch (e) {
+        setError('Não foi possível registrar o serviço.');
+        console.error(e);
+      } finally {
+        setIsSubmitting(false);
+      }
+      
+
     }
   }
 
@@ -140,15 +144,6 @@ const NewServiceForm = () => {
               type="date" 
               value={dataChegouStr} 
               onChange={(e) => setDataChegouStr(e.target.value)} 
-              className="p-1 rounded bg-zinc-700 text-white text-sm"
-            />
-          </div>
-          <div className="flex gap-2 items-center">
-            <label className="text-sky-600 text-sm">Data entrega:</label>
-            <input 
-              type="date" 
-              value={dataEntregaStr} 
-              onChange={(e) => setDataEntregaStr(e.target.value)} 
               className="p-1 rounded bg-zinc-700 text-white text-sm"
             />
           </div>

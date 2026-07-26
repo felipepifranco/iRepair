@@ -2,10 +2,11 @@ import { useState } from "react";
 import { type ServiceOrder } from "../types/serviceOrder";
   
 
-export function ServiceCard({client_id,device, issue, created_at, due_at, status} : ServiceOrder){
+export function ServiceCard({client_id,device, issue, created_at, status} : ServiceOrder){
   
   const [status_, setStatus] = useState(status); 
   
+  // TODO: FAZER ISSO MUDAR O ESTADO REAL
   function alternaStatus(){
     setStatus((prev) => (prev === "open" ? "done" : "open"));
   };
@@ -16,7 +17,7 @@ export function ServiceCard({client_id,device, issue, created_at, due_at, status
     <section className="self-center w-3xl flex flex-col border-solid border border-stone-500 rounded-sm py-4 gap-1 ">
       <div className="flex justify-between px-5 items-center">
         <div className="flex gap-4 items-center">
-          # TODO: pegar o nome do cliente em vez do id
+          {/* TODO: pegar o nome do cliente em vez do id */}
           <h2 className="font-bold text-sky-600 text-xl">{client_id}</h2>
           <span className="text-emerald-300"> - </span>
           <h2 className=" text-sky-600 text-xl ">{device}</h2>
@@ -40,10 +41,6 @@ export function ServiceCard({client_id,device, issue, created_at, due_at, status
         {created_at && (
           <p className=" text-stone-300"> 
             <span className="px-5  text-emerald-300">Data chegada:</span> {created_at}</p>
-        )}
-        {due_at && (
-          <p className=" text-stone-300"> 
-            <span className="px-5  text-emerald-300">Data entrega:</span> {due_at}</p>
         )}
       </footer>
     </section>

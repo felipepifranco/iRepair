@@ -8,6 +8,5 @@ Esse projeto foi criado durante o trainee da iJunior, com o intuito de aprender 
   - aparelho
   - defeito
   - data chegada (opcional, caso não especificado coloca a data atual)
-  - data entrega (opcional)
 
 
