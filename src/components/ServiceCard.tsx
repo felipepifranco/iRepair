@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
-import { type ServiceOrder } from "../types/serviceOrder";
-import { deleteServiceOrder } from "../services/serviceOrderService";
+import { type ServiceOrder, type ServiceOrderStatus } from "../types/serviceOrder";
+import { deleteServiceOrder, changeStatus } from "../services/serviceOrderService";
 import { getClientName } from "../services/clientService";
 
 
@@ -11,12 +11,19 @@ export function ServiceCard({id, client_id,device, issue, created_at, status, fe
   const [status_, setStatus] = useState(status); 
   
   // TODO: FAZER ISSO MUDAR O ESTADO REAL
-  function alternaStatus() {
-    setStatus((prev) => {
-      if (prev === "open") return "in_progress";
-      if (prev === "in_progress") return "done";
-      return "open";
-    });
+  async function alternaStatus() {
+    let newStatus : ServiceOrderStatus;
+    if (status_ === "open") newStatus = "in_progress";
+    else if (status_ === "in_progress") newStatus = "done";
+    else newStatus =  "open";
+
+    setStatus(newStatus);
+
+    try {
+      await changeStatus(id, newStatus);
+    } catch (error) {
+      console.error("Erro ao alterar o status na API:", error);
+    }
   }
 
   const [clientName, setClientName] = useState("");
@@ -28,7 +35,7 @@ export function ServiceCard({id, client_id,device, issue, created_at, status, fe
         setClientName(name);
       } catch (error) {
         console.error("Erro ao buscar nome do cliente:", error);
-        setClientName(`Cliente #${client_id}`); // Fallback caso dê erro na API
+        setClientName(`Cliente #${client_id}`); 
       }
     }
 
@@ -43,7 +50,6 @@ export function ServiceCard({id, client_id,device, issue, created_at, status, fe
       console.log(`Cliente ${id} deletado com sucesso!`);
       fetchServices()
     } catch(error){
-      // TODO: criar um alert
       console.error("Erro ao deletar cliente:", error);
     }
   }

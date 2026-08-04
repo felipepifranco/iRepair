@@ -1,5 +1,5 @@
 import { api } from './api'
-import { type ServiceOrder, type CreateServiceOrderData } from '../types';
+import { type ServiceOrder, type CreateServiceOrderData, type ServiceOrderStatus } from '../types';
 
 export async function getAllServiceOrders(): Promise<ServiceOrder[]> {
   const response = await api.get<ServiceOrder[]>('/service-orders');
@@ -13,6 +13,26 @@ export async function createServiceOrder(
   return response.data;
 }
 
-export async function deleteServiceOrder(id: number): Promise<void> {
+export async function deleteServiceOrder(id: number) {
   await api.delete(`/service-orders/${id}`);
+}
+
+export async function searchService(id:number) : Promise<ServiceOrder>{
+  const response = await api.get<ServiceOrder>(`/service-orders/${id}`);
+  return response.data;
+}
+
+export async function changeStatus(id_: number, status_ : ServiceOrderStatus){
+  const originalData = await searchService(id_);
+  
+  const { id, created_at, client_id, ...restData } = originalData;
+
+  const data = {
+    ...restData,
+    clientId: client_id,
+    status: status_,
+  };
+
+  console.log(data)
+  await api.put(`/service-orders/${id_}`, data);
 }

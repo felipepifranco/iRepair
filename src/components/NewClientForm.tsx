@@ -1,6 +1,6 @@
 import {useState} from "react"
 import { type CreateClientData } from "../types";
-import { createClient, getAllClients } from "../services/clientService";
+import { createClient } from "../services/clientService";
 
 export function NewClientForm({ loadClients }: { loadClients: () => void }) {
 
@@ -36,10 +36,6 @@ export function NewClientForm({ loadClients }: { loadClients: () => void }) {
     }
   }
 
-  async function teste(){
-    console.log(getAllClients())
-  }
-  teste()
 
   
   return (
@@ -52,7 +48,7 @@ export function NewClientForm({ loadClients }: { loadClients: () => void }) {
             type="text" 
             value={name} 
             onChange={(e) => setName(e.target.value)} 
-            placeholder="descrição do defeito" 
+            placeholder="nome do cliente" 
             className="p-1 rounded bg-zinc-700 text-white w-full"
           />
         </div>
@@ -63,7 +59,7 @@ export function NewClientForm({ loadClients }: { loadClients: () => void }) {
               type="text" 
               value={phone} 
               onChange={(e) => setPhone(e.target.value)} 
-              placeholder="nome do cliente" 
+              placeholder="telefone do cliente" 
               className="p-1 rounded bg-zinc-700 text-white"
             />
           </div>
@@ -73,7 +69,7 @@ export function NewClientForm({ loadClients }: { loadClients: () => void }) {
               type="text" 
               value={email} 
               onChange={(e) => setEmail(e.target.value)} 
-              placeholder="aparelho do cliente" 
+              placeholder="email do cliente" 
               className="p-1 rounded bg-zinc-700 text-white"
             />
           </div>
