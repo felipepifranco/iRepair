@@ -16,10 +16,10 @@ class ServiceOrderController {
       // 2. Chama o "Trabalhador" (Service) para fazer a lógica
       const service = new ServiceOrderService();
       const status : ServiceOrderStatus = "open";
-      const task = await service.create({ client_id, device, issue, status});
+      const sOrder = await service.create({ client_id, device, issue, status});
       
       // 3. Devolve a resposta (trabalho de Gerente)
-      return res.status(201).json(task);
+      return res.status(201).json(sOrder);
      } catch (error) {
       // 4. Se o "Trabalhador" der um erro (ex: "Nome é obrigatório"),
       // o Gerente avisa o Cliente.
@@ -30,7 +30,7 @@ class ServiceOrderController {
     }
   }
   
-  // listar tarefas
+  // listar ordens de serviço
   async list(req: Request, res: Response) {
     const service = new ServiceOrderService();
     try{
@@ -53,7 +53,7 @@ class ServiceOrderController {
     }
   }
 
-  // buscar tarefa especifica
+  // buscar ordem especifica
   async search(req: Request, res: Response){
     try{
       const id = Number(req.params.id);
@@ -71,16 +71,16 @@ class ServiceOrderController {
     }
   }
 
-  // atualizar uma tarefa
+  // atualizar uma ordem de serviço
   async editServiceOrder(req: Request, res: Response){
     try{
       const id = Number(req.params.id);
       const {client_id, device, issue, status} = req.body;
 
       const service = new ServiceOrderService();
-      const task = await service.editServiceOrder(id,  client_id, device, issue, status);
+      const sOrder = await service.editServiceOrder(id,  client_id, device, issue, status);
       
-      return res.status(200).json(task);
+      return res.status(200).json(sOrder);
       
     }catch (error){
       if (error instanceof DoesntExist) {

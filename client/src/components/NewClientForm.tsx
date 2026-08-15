@@ -12,7 +12,7 @@ export function NewClientForm({ loadClients }: { loadClients: () => void }) {
     event.preventDefault();
     
     if (name.trim() !== "" && phone.trim() !== "" && email.trim() !== "") {
-
+      //TODO: tratar informações vazias?
       const newService: CreateClientData = {
         name: name,
         phone: phone,
@@ -21,7 +21,7 @@ export function NewClientForm({ loadClients }: { loadClients: () => void }) {
       
       try {        
         await createClient(newService);
-
+handleSubmit
         loadClients()
         console.log(`carregou`)
 

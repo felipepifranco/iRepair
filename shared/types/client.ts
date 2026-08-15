@@ -3,7 +3,7 @@ export interface Client {
   name: string;
   phone: string;
   email: string;
-  created_at: string;
+  created_at: Date; // TODO: corrigir usos de data como string
 }
 
 // O que mandamos no corpo do POST (sem id e created_at, que são gerados pelo servidor)

@@ -52,7 +52,7 @@ class ServiceOrderService {
     }
   }
 
-  // método para editar uma tarefa
+  // método para editar um service order
   async editServiceOrder(id_ : number, client_id? : number, device?: string, issue?: string, status?: ServiceOrderStatus){
     // valores são opcionais pois permite definir oq quer mudar
     try{
