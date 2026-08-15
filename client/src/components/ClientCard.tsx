@@ -11,7 +11,6 @@ export function ClientCard({id, name,phone, email, loadClients} : Client & { loa
   async function handleDelete(){
     try{
       await deleteClient(id)
-      console.log(`Cliente ${id} deletado com sucesso!`);
       loadClients()
     } catch(error){
       // TODO: criar um alert

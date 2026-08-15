@@ -33,6 +33,5 @@ export async function changeStatus(id_: number, status_ : ServiceOrderStatus){
     status: status_,
   };
 
-  console.log(data)
   await api.put(`/service-orders/${id_}`, data);
 }

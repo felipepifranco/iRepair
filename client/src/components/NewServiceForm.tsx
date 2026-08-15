@@ -28,8 +28,6 @@ function NewServiceForm({fetchServices} : {fetchServices : () => void}) {
         await createServiceOrder(newService);
         fetchServices()
 
-        console.log(`carregou`)
-
         setName("");
         setAparelho("");
         setDefeito("");

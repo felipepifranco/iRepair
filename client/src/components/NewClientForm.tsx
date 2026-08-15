@@ -23,7 +23,6 @@ export function NewClientForm({ loadClients }: { loadClients: () => void }) {
         await createClient(newService);
 handleSubmit
         loadClients()
-        console.log(`carregou`)
 
         setName("");
         setPhone("");

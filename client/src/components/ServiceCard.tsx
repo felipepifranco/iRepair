@@ -48,7 +48,6 @@ export function ServiceCard({id, client_id,device, issue, created_at, status, fe
   async function handleDelete(){
     try{
       await deleteServiceOrder(id)
-      console.log(`Cliente ${id} deletado com sucesso!`);
       fetchServices()
     } catch(error){
       console.error("Erro ao deletar cliente:", error);
