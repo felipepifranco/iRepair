@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
-import { type ServiceOrder, type ServiceOrderStatus } from "../types/serviceOrder";
+import { type ServiceOrder, type ServiceOrderStatus } from "../../../shared/types";
 import { deleteServiceOrder, changeStatus } from "../services/serviceOrderService";
 import { getClientName } from "../services/clientService";
+import { formatTime } from "../utils/formatTime";
 
 
 export function ServiceCard({id, client_id,device, issue, created_at, status, fetchServices} : ServiceOrder & { fetchServices: () => void } ){
@@ -102,7 +103,7 @@ export function ServiceCard({id, client_id,device, issue, created_at, status, fe
       <footer className=" py-2 flex justify-between">
         {created_at && (
           <p className=" text-stone-300"> 
-            <span className="px-5 font-bold text-emerald-300">Data chegada:</span> {created_at}</p>
+            <span className="px-5 font-bold text-emerald-300">Data chegada:</span> {formatTime(created_at)}</p>
         )}
       </footer>
     </section>

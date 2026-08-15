@@ -1,4 +1,4 @@
-import type { Client } from "../types";
+import type { Client } from "../../../shared/types";
 import { deleteClient } from "../services/clientService";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

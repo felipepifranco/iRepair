@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { type CreateServiceOrderData } from '../types';
+import { type CreateServiceOrder } from "../../../shared/types";
 import { createServiceOrder } from "../services/serviceOrderService";
 import { ClientSelectDropdown } from "./DropBox";
 
@@ -17,8 +17,8 @@ function NewServiceForm({fetchServices} : {fetchServices : () => void}) {
 
     if (name.trim() !== "" && aparelho.trim() !== "" && defeito.trim() !== "") {
       // PEGAR UM CLIENTE
-      const newService: CreateServiceOrderData = {
-        clientId: selectedClientId ?? 2,
+      const newService: CreateServiceOrder = {
+        client_id: selectedClientId ?? 2,
         device: aparelho,
         issue: defeito,
         status: 'open',

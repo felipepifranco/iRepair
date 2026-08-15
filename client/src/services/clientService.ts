@@ -1,5 +1,5 @@
 import { api } from './api';
-import { type Client, type CreateClientData } from '../types';
+import { type Client, type CreateClientData } from '../../../shared/types';
 
 export async function getAllClients(): Promise<Client[]> {
   const response = await api.get<Client[]>('/clients');

@@ -1,6 +1,7 @@
 import 'dotenv/config'
-import express from 'express'
+import { app } from './config/expressConfig'
 
+/* TODO: fazer autenticação
 // validação no startup de variáveis críticas
 if (!process.env.JWT_SECRET) {
   throw new Error('JWT_SECRET não definido nas variáveis de ambiente')
@@ -9,6 +10,7 @@ if (!process.env.JWT_SECRET) {
 if (!process.env.DATABASE_URL) {
   throw new Error('DATABASE_URL não definido nas variáveis de ambiente')
 }
+  */
 
 const PORTA = 3333;
 

@@ -1,5 +1,5 @@
 import {useState} from "react"
-import { type CreateClientData } from "../types";
+import { type CreateClientData } from "../../../shared/types";
 import { createClient } from "../services/clientService";
 
 export function NewClientForm({ loadClients }: { loadClients: () => void }) {

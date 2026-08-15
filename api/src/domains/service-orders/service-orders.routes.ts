@@ -1,6 +1,6 @@
 // src/domains/ordens/ordens.routes.ts
 import { Router } from 'express'
-import { authMiddleware } from '../../middlewares/authMiddleware'
+// import { authMiddleware } from '../../middlewares/authMiddleware'
 import { ServiceOrderController } from './service-orders.controller'
 
 const ordensRoutes = Router()

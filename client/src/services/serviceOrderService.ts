@@ -1,5 +1,5 @@
 import { api } from './api'
-import { type ServiceOrder, type CreateServiceOrderData, type ServiceOrderStatus } from '../types';
+import { type ServiceOrder, type CreateServiceOrder, type ServiceOrderStatus } from '../../../shared/types';
 
 export async function getAllServiceOrders(): Promise<ServiceOrder[]> {
   const response = await api.get<ServiceOrder[]>('/service-orders');
@@ -7,7 +7,7 @@ export async function getAllServiceOrders(): Promise<ServiceOrder[]> {
 }
 
 export async function createServiceOrder(
-  data: CreateServiceOrderData
+  data: CreateServiceOrder
 ): Promise<ServiceOrder> {
   const response = await api.post<ServiceOrder>('/service-orders', data);
   return response.data;

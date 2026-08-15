@@ -1,3 +1,4 @@
+/*
 // src/middlewares/authMiddleware.ts
 import { type Request, type Response, type NextFunction } from 'express'
 import { verifyToken } from '../utils/token'
@@ -17,3 +18,5 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction) 
     return res.status(401).json({ error: 'Token inválido ou expirado' })
   }
 }
+
+*/

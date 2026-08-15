@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 import { AllServicesList } from "../components/AllServicesList"
-import { type ServiceOrder } from "../types";
+import { type ServiceOrder } from "../../../shared/types";
 import { getAllServiceOrders } from "../services/serviceOrderService";
 
 export function DashboardPage() {

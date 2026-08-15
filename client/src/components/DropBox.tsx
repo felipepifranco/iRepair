@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { type Client } from "../types";
+import { type Client } from "../../../shared/types";
 import { getAllClients } from "../services/clientService";
 
 export function ClientSelectDropdown({ name,setName, onSelectClient}: {name: string; setName: (name: string) => void; onSelectClient: (clientId: number | null) => void;}) {
