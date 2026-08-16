@@ -1,5 +1,5 @@
 import { ServiceCard } from "./ServiceCard"; 
-import { type ServiceOrder } from '../../../shared/types';
+import { type ServiceOrder } from '../../types';
 
 export function AllServicesList({isLoading, error, services, fetchServices} : {isLoading : boolean, error : string | null, services : ServiceOrder[], fetchServices: () => void}){
   if (isLoading){
@@ -23,7 +23,7 @@ export function AllServicesList({isLoading, error, services, fetchServices} : {i
       {services.length === 0 && 
       <p className="text-center text-stone-400">Nenhum serviço registrado.</p>}
       
-      {services.map((service : ServiceOrder) => (
+      {Array.isArray(services) && services.map((service : ServiceOrder) => (
         <ServiceCard 
           key={service.id} 
           id={service.id}

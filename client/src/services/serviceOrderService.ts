@@ -1,5 +1,5 @@
 import { api } from './api'
-import { type ServiceOrder, type CreateServiceOrder, type ServiceOrderStatus } from '../../../shared/types';
+import { type ServiceOrder, type CreateServiceOrder, type ServiceOrderStatus } from '../../types';
 
 export async function getAllServiceOrders(): Promise<ServiceOrder[]> {
   const response = await api.get<ServiceOrder[]>('/service-orders');

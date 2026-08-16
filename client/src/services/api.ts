@@ -2,7 +2,7 @@ import axios from 'axios'
 
 
 export const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL, // lido do .env
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000', // lido do .env
   withCredentials: true,                 // envia o cookie httpOnly automaticamente
   headers: {
     'Content-Type': 'application/json',
