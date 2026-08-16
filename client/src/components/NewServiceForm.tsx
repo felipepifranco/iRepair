@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { type CreateServiceOrder } from "../../../shared/types";
+import { type CreateServiceOrder } from "../../types";
 import { createServiceOrder } from "../services/serviceOrderService";
 import { ClientSelectDropdown } from "./DropBox";
 

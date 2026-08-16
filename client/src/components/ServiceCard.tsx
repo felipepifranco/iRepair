@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
-import { type ServiceOrder, type ServiceOrderStatus } from "../../../shared/types";
+import { type ServiceOrder, type ServiceOrderStatus } from "../../types";
 import { deleteServiceOrder, changeStatus } from "../services/serviceOrderService";
 import { getClientName } from "../services/clientService";
 import { formatTime } from "../utils/formatTime";

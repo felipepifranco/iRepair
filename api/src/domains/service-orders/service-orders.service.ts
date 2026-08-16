@@ -1,4 +1,6 @@
-import {type ServiceOrder, type  CreateServiceOrder} from "@shared/types"
+import type { serviceOrder } from "@generated/prisma";
+import { Prisma } from "@generated/prisma";
+type CreateServiceOrder = Prisma.serviceOrderUncheckedCreateInput; // isso permite usar a chave estrangeira como parte do bgl, mesmo se no schema ele passe o tipo client todo
 import { DoesntExist } from "../../utils/DoesntExist.js";
 
 import { prisma } from "../../config/prismaClient"
@@ -8,7 +10,7 @@ import { ServiceOrderStatus } from "@generated/prisma";
 
 class ServiceOrderService {
   // criar service order
-  async create({ client_id, device, issue , status}: CreateServiceOrder ) : Promise<ServiceOrder> {
+  async create({ client_id, device, issue , status}: CreateServiceOrder ) : Promise<serviceOrder> {
     
     if (!client_id) {
       throw new Error("ID do cliente é obrigatório");
@@ -31,10 +33,10 @@ class ServiceOrderService {
   }
   
   // listar ordens de serviço
-  async list(status? : ServiceOrderStatus | undefined) : Promise<ServiceOrder[]>{
+  async list(status? : ServiceOrderStatus | undefined) : Promise<serviceOrder[]>{
     const orders = await prisma.serviceOrder.findMany();
     if (status !== undefined) {
-      return orders.filter((serviceOrder : ServiceOrder)=> serviceOrder.status === status);
+      return orders.filter((serviceOrder : serviceOrder)=> serviceOrder.status === status);
     }
     return orders;
   }
@@ -42,7 +44,7 @@ class ServiceOrderService {
 
 
   // método para buscar um service específica pelo ID
-  async search(id_ :number) : Promise<ServiceOrder>{
+  async search(id_ :number) : Promise<serviceOrder>{
     const sOrder = await prisma.serviceOrder.findUnique({ where: { id: id_ } });
 
     if(sOrder === null){

@@ -1,4 +1,6 @@
-import {type Client, type  CreateClientData} from "@shared/types"
+import type { client } from "@generated/prisma";
+import { Prisma } from "@generated/prisma";
+type CreateClient = Prisma.clientUncheckedCreateInput; 
 import { DoesntExist } from "../../utils/DoesntExist.js";
 
 import { prisma } from "../../config/prismaClient"
@@ -8,7 +10,7 @@ import { PrismaClientKnownRequestError } from "@prisma/client/runtime/client";
 
 class ClientService {
   // criar novo cliente
-  async create({ name, phone, email}: CreateClientData ) : Promise<Client> {
+  async create({ name, phone, email}: CreateClient) : Promise<client> {
     
     if (!name) {
       throw new Error("nome do cliente é obrigatório");
@@ -30,14 +32,14 @@ class ClientService {
   }
   
   // listar clientes
-  async list() : Promise<Client[]>{
+  async list() : Promise<client[]>{
     const clients = await prisma.client.findMany();
     
     return clients;
   }
 
   // método para buscar um cliente específica pelo ID
-  async search(id_ :number) : Promise<Client>{
+  async search(id_ :number) : Promise<client>{
     const client_ = await prisma.client.findUnique({ where: { id: id_ } });
 
     if(client_ === null){

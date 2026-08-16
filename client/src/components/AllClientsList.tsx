@@ -1,4 +1,4 @@
-import { type Client } from '../../../shared/types';;
+import { type Client } from '../../types';;
 import { ClientCard } from "./ClientCard";
 
 
