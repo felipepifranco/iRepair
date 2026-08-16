@@ -34,6 +34,9 @@ dist/
 .env.*.local
 api/generated/prisma
 
+api/.env
+client/.env
+
 
 .vscode/
 .idea/
