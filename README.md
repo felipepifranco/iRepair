@@ -80,5 +80,9 @@ cd iRepair
     ```
 3. Na pasta raiz, execute o docker compose:
 ```shell
+cd ..
 docker compose up --build
 ```
+
+4. Entrar em `http://localhost:8080` no navegador
+5. Clicar na parte de registro (canto superior direito), registrar e depois logar
