@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 import { NewClientForm } from "../components/NewClientForm"
 import { AllClientsList } from "../components/AllClientsList"
-import { type Client } from "../../../shared/types";
+import { type Client } from "../../types";
 import { getAllClients } from "../services/clientService";
 
 export function ClientsPage() {

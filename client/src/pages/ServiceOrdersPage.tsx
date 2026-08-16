@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 import NewServiceForm from './../components/NewServiceForm'
-import { type ServiceOrder } from '../../../shared/types';
+import { type ServiceOrder } from '../../types';
 import { getAllServiceOrders } from "../services/serviceOrderService";
 import { AllServicesList } from '../components/AllServicesList';
 

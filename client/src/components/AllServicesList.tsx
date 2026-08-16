@@ -1,5 +1,5 @@
 import { ServiceCard } from "./ServiceCard"; 
-import { type ServiceOrder } from '../../../shared/types';
+import { type ServiceOrder } from '../../types';
 
 export function AllServicesList({isLoading, error, services, fetchServices} : {isLoading : boolean, error : string | null, services : ServiceOrder[], fetchServices: () => void}){
   if (isLoading){
