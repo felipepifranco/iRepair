@@ -12,7 +12,7 @@ if (!process.env.DATABASE_URL) {
 }
 
 
-const PORTA = 3333;
+const PORTA = 3000;
 
 app.listen(PORTA, () => {
   console.log(`🚀 Servidor rodando na porta ${PORTA}`);

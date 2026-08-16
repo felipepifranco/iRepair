@@ -16,7 +16,7 @@ export function AllClientsList({clients,loadClients, hasLoaded }: {clients: Clie
       {clients.length === 0 && 
       <p className="text-center text-stone-400">Nenhum serviço registrado.</p>}
       
-      {clients.map((client : Client) => (
+      {Array.isArray(clients) && clients.map((client : Client) => (
         <ClientCard 
           key={client.id} 
           id={client.id}

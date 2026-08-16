@@ -9,7 +9,7 @@ import { authRoutes } from '../domains/auth/auth.routes';
 const app = express();
 
 app.use(cors({
-  origin: 'http://localhost:5173',  // origem exata do seu front-end
+  origin: ['http://localhost:8080', 'http://localhost:5173'],  // origem exata do seu front-end
   credentials: true,                // OBRIGATÓRIO para enviar/receber cookies
 }))
 

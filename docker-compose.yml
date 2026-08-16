@@ -32,7 +32,7 @@ services:
       PORT: 3000
     ports:
       - "3000:3000"
-    command: sh -c "npx prisma migrate deploy && node dist/index.js"
+    command: sh -c "npx prisma migrate deploy && npx tsx src/server.ts"
 
   # ---- Front-End ----
   client:

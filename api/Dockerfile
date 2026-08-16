@@ -2,11 +2,11 @@
 FROM node:22-alpine
 
 # 2. Diretório de trabalho dentro do container
-WORKDIR /app/api
+WORKDIR /app
 
 # 3. Copiar arquivos de dependência PRIMEIRO (otimiza cache do Docker)
-COPY api/package*.json ./
-COPY api/prisma ./prisma/
+COPY package*.json ./
+COPY prisma ./prisma/
 
 # 4. Instalar dependências
 RUN npm ci
@@ -15,9 +15,7 @@ RUN npm ci
 RUN npx prisma generate
 
 # 6. Copiar o restante do código
-COPY api/ ./
-
-COPY shared/ /app/shared/
+COPY . .
 
 # 7. Build do TypeScript
 RUN npm run build
@@ -26,4 +24,4 @@ RUN npm run build
 EXPOSE 3000
 
 # 9. Comando para iniciar
-CMD ["node", "dist/server.js"]
+CMD ["npx", "tsx", "src/server.ts"]
